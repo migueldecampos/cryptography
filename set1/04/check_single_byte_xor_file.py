@@ -1,5 +1,6 @@
 import sys
 import re
+import fileinput
 
 def decode(hex_string, byte):
 	
@@ -50,19 +51,29 @@ def checker(string):
 
 
 
-def print_possibilities():
+def print_possibilities(line):
 
-	if len(sys.argv) != 2:
-		print("Pass one hex string as parameter.")
-		exit()
-	if not re.match('^[0-9a-fA-F]{1,}$', sys.argv[1]):
-		print("Pass one hex string as parameter.")
-		exit()
+#	if len(sys.argv) != 2:
+#		print("Pass one hex string as parameter.")
+#		exit()
+#	if not re.match('^[0-9a-fA-F]{1,}$', sys.argv[1]):
+#		print("Pass one hex string as parameter.")
+#		exit()
 	i = 0
 	while i < 256:
-		string = decode(sys.argv[1], i)
+		string = decode(line, i)
 		if checker(string):
 			print("(", i, ") ", string, sep='')
 		i = i + 1
 
-print_possibilities()
+
+def launcher():
+	cnt = 1
+	for line in fileinput.input():
+		print(f"## Line {cnt}")
+		print_possibilities(line)
+		print()
+		cnt = cnt + 1
+
+
+launcher()
